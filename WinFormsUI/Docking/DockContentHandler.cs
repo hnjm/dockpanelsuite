@@ -658,6 +658,19 @@ namespace WeifenLuo.WinFormsUI.Docking
             }
         }
 
+        private bool m_activateOnShow = true;
+        public bool ActivateOnShow
+        {
+            get	{	return m_activateOnShow;	}
+            set
+            {
+                if (m_activateOnShow == value)
+                    return;
+
+                m_activateOnShow = value;
+            }
+        }
+
         public bool IsDockStateValid(DockState dockState)
         {
             if (DockPanel != null && dockState == DockState.Document && DockPanel.DocumentStyle == DocumentStyle.SystemMdi)
@@ -839,7 +852,7 @@ namespace WeifenLuo.WinFormsUI.Docking
                 Show(dockPanel, DefaultShowState);
             else if (DockPanel != dockPanel)
                 Show(dockPanel, DockState == DockState.Hidden ? m_visibleState : DockState);
-            else
+            else if (m_activateOnShow)
                 Activate();
         }
 
@@ -880,8 +893,11 @@ namespace WeifenLuo.WinFormsUI.Docking
             }
 
             DockState = dockState;
-            dockPanel.ResumeLayout(true, true); //we'll resume the layout before activating to ensure that the position
-            Activate();                         //and size of the form are finally processed before the form is shown
+            //we'll resume the layout before activating to ensure that the position
+            //and size of the form are finally processed before the form is shown
+            dockPanel.ResumeLayout(true, true);
+            if (m_activateOnShow)
+                Activate();
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1720:AvoidTypeNamesInParameters")]
@@ -903,7 +919,8 @@ namespace WeifenLuo.WinFormsUI.Docking
             FloatPane.FloatWindow.Bounds = floatWindowBounds;
             
             Show(dockPanel, DockState.Float);
-            Activate();
+            if (m_activateOnShow)
+                Activate();
 
             dockPanel.ResumeLayout(true, true);
         }
