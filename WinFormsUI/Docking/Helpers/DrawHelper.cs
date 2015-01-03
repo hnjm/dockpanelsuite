@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace WeifenLuo.WinFormsUI.Docking
 {
-    internal static class DrawHelper
+    public static class DrawHelper
     {
         public static Point RtlTransform(Control control, Point point)
         {

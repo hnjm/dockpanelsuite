@@ -7,7 +7,7 @@ using System.Drawing.Imaging;
 
 namespace WeifenLuo.WinFormsUI.Docking
 {
-    internal abstract class InertButtonBase : Control
+    public abstract class InertButtonBase : Control
     {
         protected InertButtonBase()
         {
@@ -34,9 +34,43 @@ namespace WeifenLuo.WinFormsUI.Docking
             }
         }
 
+        private bool m_isMouseDown = false;
+        protected bool IsMouseDown
+        {
+            get { return m_isMouseDown; }
+            private set
+            {
+                if (m_isMouseDown == value)
+                    return;
+
+                m_isMouseDown = value;
+                Invalidate();
+            }
+        }
+
         protected override Size DefaultSize
         {
             get { return Resources.DockPane_Close.Size; }
+        }
+
+        protected virtual Color HoverBackColor
+        {
+            get { return Color.Transparent; }
+        }
+
+        protected virtual Color HoverBorderColor
+        {
+            get { return ForeColor; }
+        }
+
+        protected virtual Color HoverForeColor
+        {
+            get { return ForeColor; }
+        }
+
+        protected virtual Color PressedBackColor
+        {
+            get { return Color.Transparent; }
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -61,27 +95,44 @@ namespace WeifenLuo.WinFormsUI.Docking
                 IsMouseOver = false;
         }
 
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseLeave(e);
+            if (!IsMouseDown)
+                IsMouseDown = true;
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseLeave(e);
+            if (IsMouseDown)
+                IsMouseDown = false;
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             if (IsMouseOver && Enabled)
             {
-                using (Pen pen = new Pen(ForeColor))
+                using (Pen pen = new Pen(this.HoverBorderColor)) 
+                using (Brush brush = new SolidBrush(IsMouseDown ? PressedBackColor : HoverBackColor))
                 {
-                    e.Graphics.DrawRectangle(pen, Rectangle.Inflate(ClientRectangle, -1, -1));
+                    Rectangle rect = ClientRectangle;
+                    rect.Width--;
+                    rect.Height--;
+                    e.Graphics.FillRectangle(brush, rect);
+                    e.Graphics.DrawRectangle(pen, rect);
                 }
             }
 
             using (ImageAttributes imageAttributes = new ImageAttributes())
             {
-                ColorMap[] colorMap = new ColorMap[2];
-                colorMap[0] = new ColorMap();
-                colorMap[0].OldColor = Color.FromArgb(0, 0, 0);
-                colorMap[0].NewColor = ForeColor;
-                colorMap[1] = new ColorMap();
-                colorMap[1].OldColor = Image.GetPixel(0, 0);
-                colorMap[1].NewColor = Color.Transparent;
+                Color color = IsMouseOver ? HoverForeColor : ForeColor;
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.Matrix40 = color.R / 255f;
+                matrix.Matrix41 = color.G / 255f;
+                matrix.Matrix42 = color.B / 255f;
 
-                imageAttributes.SetRemapTable(colorMap);
+                imageAttributes.SetColorMatrix(matrix);
 
                 e.Graphics.DrawImage(
                    Image,

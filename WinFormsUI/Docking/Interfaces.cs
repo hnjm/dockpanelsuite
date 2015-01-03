@@ -20,12 +20,12 @@ namespace WeifenLuo.WinFormsUI.Docking
         bool IsFloat	{	get;	}
     }
 
-    internal interface IDragSource
+    public interface IDragSource
     {
         Control DragControl { get; }
     }
 
-    internal interface IDockDragSource : IDragSource
+    public interface IDockDragSource : IDragSource
     {
         Rectangle BeginDrag(Point ptMouse);
         void EndDrag();
@@ -36,7 +36,7 @@ namespace WeifenLuo.WinFormsUI.Docking
         void DockTo(DockPanel panel, DockStyle dockStyle);
     }
 
-    internal interface ISplitterDragSource : IDragSource
+    public interface ISplitterDragSource : IDragSource
     {
         void BeginDrag(Rectangle rectSplitter);
         void EndDrag();

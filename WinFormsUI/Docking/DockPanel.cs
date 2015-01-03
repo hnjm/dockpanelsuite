@@ -799,20 +799,27 @@ namespace WeifenLuo.WinFormsUI.Docking
                 Panes.AddAt(pane, index);
         }
 
+        int suspendCount = 0;
         public void SuspendLayout(bool allWindows)
         {
-            FocusManager.SuspendFocusTracking();
-            SuspendLayout();
-            if (allWindows)
-                SuspendMdiClientLayout();
+            if (suspendCount++ == 0)
+            {
+                FocusManager.SuspendFocusTracking();
+                SuspendLayout();
+                if (allWindows)
+                    SuspendMdiClientLayout();
+            }
         }
 
         public void ResumeLayout(bool performLayout, bool allWindows)
         {
-            FocusManager.ResumeFocusTracking();
-            ResumeLayout(performLayout);
-            if (allWindows)
-                ResumeMdiClientLayout(performLayout);
+            if (--suspendCount == 0)
+            {
+                FocusManager.ResumeFocusTracking();
+                ResumeLayout(performLayout);
+                if (allWindows)
+                    ResumeMdiClientLayout(performLayout);
+            }
         }
 
         internal Form ParentForm
