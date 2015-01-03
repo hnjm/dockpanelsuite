@@ -422,8 +422,7 @@ namespace WeifenLuo.WinFormsUI.Docking
                 return;
 
             m_isActivated = value;
-            if (DockState != DockState.Document)
-                RefreshChanges(false);
+            RefreshChanges(false);
             OnIsActivatedChanged(EventArgs.Empty);
         }
 

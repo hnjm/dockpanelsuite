@@ -724,9 +724,14 @@ namespace WeifenLuo.WinFormsUI.Docking
             FloatWindows.Add(floatWindow);
         }
 
-        private void CalculateDockPadding()
+        public new Padding Padding { get; set; }
+
+		private void CalculateDockPadding()
         {
-            DockPadding.All = 0;
+            DockPadding.Left = Padding.Left;
+            DockPadding.Right = Padding.Right;
+            DockPadding.Top = Padding.Top;
+            DockPadding.Bottom = Padding.Bottom;
 
             int height = AutoHideStripControl.MeasureHeight();
 

@@ -11,7 +11,7 @@ namespace WeifenLuo.WinFormsUI.Docking
     {
         protected InertButtonBase()
         {
-            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            SetStyle(ControlStyles.SupportsTransparentBackColor | ControlStyles.OptimizedDoubleBuffer, true);
             BackColor = Color.Transparent;
         }
 
@@ -136,7 +136,10 @@ namespace WeifenLuo.WinFormsUI.Docking
 
                 e.Graphics.DrawImage(
                    Image,
-                   new Rectangle(0, 0, Image.Width, Image.Height),
+                   new Rectangle(
+                       (ClientRectangle.Width - Image.Width) / 2,
+                       (ClientRectangle.Height - Image.Height) / 2,
+                       Image.Width, Image.Height),
                    0, 0,
                    Image.Width,
                    Image.Height,

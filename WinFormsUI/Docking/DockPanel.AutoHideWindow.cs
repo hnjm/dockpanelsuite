@@ -219,7 +219,7 @@ namespace WeifenLuo.WinFormsUI.Docking
                 get { return ActiveContent == null ? DockState.Unknown : ActiveContent.DockHandler.DockState; }
             }
 
-            private bool m_flagAnimate = true;
+            private bool m_flagAnimate = false;
             private bool FlagAnimate
             {
                 get { return m_flagAnimate; }
@@ -425,9 +425,7 @@ namespace WeifenLuo.WinFormsUI.Docking
 
                 if (!DockHelper.IsDockStateAutoHide(ActiveContent.DockHandler.DockState))
                 {
-                    FlagAnimate = false;
                     ActiveContent = null;
-                    FlagAnimate = true;
                 }
             }
 

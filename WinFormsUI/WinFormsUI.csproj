@@ -252,13 +252,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Docking\Resources\DockPane_AutoHide.bmp" />
-    <None Include="Docking\Resources\DockPane_Close.bmp" />
-    <None Include="Docking\Resources\DockPane_Dock.bmp" />
-    <None Include="Docking\Resources\DockPane_Option.bmp" />
-    <None Include="Docking\Resources\DockPane_OptionOverflow.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Docking\DockPanel.bmp" />
   </ItemGroup>
   <ItemGroup>
@@ -277,7 +270,12 @@
     <Content Include="Docking\Resources\DockIndicator_PanelFill_VS2012.bmp" />
     <Content Include="Docking\Resources\DockIndicator_PanelLeft_VS2012.bmp" />
     <Content Include="Docking\Resources\DockIndicator_PanelRight_VS2012.bmp" />
-    <Content Include="Docking\Resources\DockIndicator_PanelTop_VS2012.bmp" />
+    <None Include="Docking\Resources\DockIndicator_PanelTop_VS2012.bmp" />
+    <None Include="Docking\Resources\DockPane_AutoHide.png" />
+    <None Include="Docking\Resources\DockPane_Close.png" />
+    <None Include="Docking\Resources\DockPane_Dock.png" />
+    <None Include="Docking\Resources\DockPane_Option.png" />
+    <None Include="Docking\Resources\DockPane_OptionOverflow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <UsingTask Condition=" '$(Configuration)' == 'Release' AND '$(OS)' == 'Windows_NT' AND Exists('..\gendarme\GendarmeMsBuild.dll')" AssemblyFile="..\gendarme\GendarmeMsBuild.dll" TaskName="GendarmeMsBuild.Gendarme" />
